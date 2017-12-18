@@ -4,6 +4,11 @@ const replayPackets = require('./Proxy/packetReplayer')
 const addListeners = require('./Proxy/addListeners')
 
 class Proxy extends mc.Server {
+  /**
+   * Create a minecraft proxy
+   * @param {Object} serverSettings Settings for the minecraft-protocol server
+   * @param {Object} serverList An object that maps a 'serverName' to the server info
+   */
   constructor (serverSettings, serverList) {
     super(serverSettings.version, serverSettings.customPackets)
     this.serverList = serverList
@@ -29,6 +34,11 @@ class Proxy extends mc.Server {
     })
   }
 
+  /**
+   * Moves the specified client to the specified server
+   * @param {string} remoteClientId The ID of the player to move
+   * @param {string} newServerName The name of the server to wich the player should be moved
+   */
   setRemoteServer (remoteClientId, newServerName) {
     let remoteClient = this.clients[remoteClientId]
     let oldServerName = remoteClient.currentServer
@@ -71,6 +81,10 @@ class Proxy extends mc.Server {
     this.emit('playerMoved', remoteClientId, oldServerName, newServerName)
   }
 
+  /**
+   * Moves the specified client to the fallback server
+   * @param {string} remoteClientId The ID of the player to move
+   */
   fallback (remoteClientId) {
     let oldServerName = this.clients[remoteClientId].currentServer
     let fallbackServerName = this.getFallbackServerName()
@@ -78,6 +92,10 @@ class Proxy extends mc.Server {
     this.setRemoteServer(remoteClientId, fallbackServerName)
   }
 
+  /**
+   * Returns the fallback server's name
+   * @returns {string} The fallback server's name
+   */
   getFallbackServerName () {
     for (let serverName in this.serverList) {
       if (this.serverList[serverName].isFallback) return serverName
@@ -86,6 +104,10 @@ class Proxy extends mc.Server {
     this.emit('error', new Error('No fallback server found!'))
   }
 
+  /**
+   * Returns the default server's name
+   * @returns {string} The default server's name
+   */
   getDefaultServerName () {
     for (let serverName in this.serverList) {
       if (this.serverList[serverName].isDefault) return serverName

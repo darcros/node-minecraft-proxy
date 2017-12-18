@@ -10,6 +10,12 @@ const serverPlugins = [
   require(path.join(mcProtocolPath, '../server/ping'))
 ]
 
+/**
+ * Create a new proxy
+ * @param {Object} options Settings for the minecraft-protocol server
+ * @param {Object} serverList An object that maps a 'serverName' to the server info
+ * @returns {MinecraftProxy} A new Minecraft proxy
+ */
 function createProxy (options, serverList) {
   const {
     host = '0.0.0.0',
