@@ -1,0 +1,25 @@
+{
+  "name": "mc-proxy",
+  "version": "1.0.0",
+  "description": "A node.js Minecraft proxy created with node-minecraft-protocol",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test/test.js"
+  },
+  "author": "Dario Crosa",
+  "license": "MIT",
+  "dependencies": {
+    "minecraft-data": "^2.21.0",
+    "minecraft-protocol": "^1.4.1",
+    "node-rsa": "^0.4.2",
+    "queuejs": "^0.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.13.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
+  }
+}
