@@ -9,12 +9,12 @@ Simple Minecraft proxy written in Node.js using the node-minecraft-protocol libr
 ## Installation
 
 ### Npm
-Coming soon...
+`npm install basic-minecraft-proxy`
 
 ### Cloning repository
-* Somewhere in you project folder do `git clone https://github.com/7ixi0/node-minecraft-proxy.git`
-* install dependencies with `npm install`
-* then inside your `whatever.js` file `const McProxy = require('./path/where/you/cloned');`
+1. Somewhere in you project folder do `git clone https://github.com/7ixi0/node-minecraft-proxy.git`
+2. install dependencies with `npm install`
+3. then inside your `whatever.js` file `const McProxy = require('./path/where/you/cloned');`
 
 ## Usage
 
