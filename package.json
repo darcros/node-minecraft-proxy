@@ -1,13 +1,27 @@
 {
-  "name": "mc-proxy",
+  "name": "minecraft-proxy",
   "version": "1.0.0",
   "description": "A node.js Minecraft proxy created with node-minecraft-protocol",
+  "keywords": [
+    "minecraft",
+    "minecraft-protocol",
+    "proxy",
+    "minecraft-proxy",
+    "mc-proxy"
+  ],
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/test.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Dario Crosa",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/7ixi0/node-minecraft-proxy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/7ixi0/node-minecraft-proxy/issues"
+  },
   "dependencies": {
     "minecraft-data": "^2.21.0",
     "minecraft-protocol": "^1.4.1",
