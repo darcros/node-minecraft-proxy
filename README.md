@@ -1,11 +1,11 @@
 # node-minecraft-proxy
 Simple Minecraft proxy written in Node.js using the node-minecraft-protocol library
 
-### Table of contents
-[Features](#Features)  
-[Installation](#Installation)  
-[Examples](#Examples)  
-[Documentation](#Documentation)  
+> ### Table of contents
+> [Features](#Features)  
+> [Installation](#Installation)  
+> [Examples](#Examples)  
+> [Documentation](#Documentation)  
 
 ## Features
 * Connect to proxy
