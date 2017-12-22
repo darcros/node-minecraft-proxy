@@ -1,6 +1,12 @@
 # node-minecraft-proxy
 Simple Minecraft proxy written in Node.js using the node-minecraft-protocol library
 
+### Table of contents
+[Features](#Features)  
+[Installation](#Installation)  
+[Examples](#Examples)  
+[Documentation](#Documentation)  
+
 ## Features
 * Connect to proxy
 * Forward players to servers
@@ -16,7 +22,8 @@ Simple Minecraft proxy written in Node.js using the node-minecraft-protocol libr
 2. install dependencies with `npm install`
 3. then inside your `whatever.js` file `const McProxy = require('./path/where/you/cloned');`
 
-## Usage
+## Examples
+See also `./examples/` for other examples
 
 ### Creating a proxy
 This example shows how to create and how to the options are passed
