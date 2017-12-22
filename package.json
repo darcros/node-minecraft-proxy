@@ -1,6 +1,6 @@
 {
   "name": "basic-minecraft-proxy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A node.js Minecraft proxy created with node-minecraft-protocol",
   "keywords": [
     "minecraft",
