@@ -70,4 +70,4 @@ proxy.on('login', (player) => {
 ```
 
 ## Documentation
-To be written
+See the [wiki](https://github.com/7ixi0/node-minecraft-proxy/wiki).
