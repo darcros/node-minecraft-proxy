@@ -8,6 +8,7 @@ class Proxy extends mc.Server {
    * Create a minecraft proxy
    * @param {Object} serverSettings Settings for the minecraft-protocol server
    * @param {Object} serverList An object that maps a 'serverName' to the server info
+   * @param {Object} proxyOptions Proxy settings
    */
   constructor (serverSettings, serverList, proxyOptions) {
     super(serverSettings.version, serverSettings.customPackets)
