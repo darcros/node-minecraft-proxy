@@ -39,7 +39,7 @@ class Proxy extends mc.Server {
   /**
    * Moves the specified client to the specified server
    * @param {string} remoteClientId The ID of the player to move
-   * @param {string} newServerName The name of the server to wich the player should be moved
+   * @param {string} newServerName The name of the server where the player should be moved
    */
   setRemoteServer (remoteClientId, newServerName) {
     let remoteClient = this.clients[remoteClientId]

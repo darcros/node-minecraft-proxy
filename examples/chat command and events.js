@@ -30,7 +30,7 @@ let proxyOptions = {
 }
 
 /*
-  Use the "/server <serverName>" commad in chat to move between servers.
+  Use the "/server <serverName>" command in chat to move between servers.
   <serverName> is the name that you chose for the server inside the serverList
   This command is implemented by /src/Plugins/ChatCommands.js and it can be disabled by setting enablePlugin: false inside proxyOptions
 */
