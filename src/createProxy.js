@@ -4,19 +4,23 @@ const path = require('path')
 const Proxy = require('./Proxy')
 
 const mcProtocolPath = require.resolve('minecraft-protocol')
-const serverPlugins = [
+const localServerPlugins = [
   require(path.join(mcProtocolPath, '../server/handshake')),
   require(path.join(mcProtocolPath, '../server/login')),
   require(path.join(mcProtocolPath, '../server/ping'))
 ]
 
+const proxyPlugins = [
+  require('./Plugins/ChatCommands')
+]
+
 /**
  * Create a new proxy
- * @param {Object} options Settings for the minecraft-protocol server
+ * @param {Object} localServerOptions Settings for the minecraft-protocol server
  * @param {Object} serverList An object that maps a 'serverName' to the server info
  * @returns {MinecraftProxy} A new Minecraft proxy
  */
-function createProxy (options, serverList) {
+function createProxy (localServerOptions, serverList, proxyOptions) {
   const {
     host = '0.0.0.0',
     'server-port': serverPort,
@@ -26,7 +30,11 @@ function createProxy (options, serverList) {
     version,
     favicon,
     customPackets
-  } = options
+  } = localServerOptions
+
+  const {
+    enablePlugins = true
+  } = proxyOptions
 
   const optVersion = version === undefined || version === false ? require(path.join(mcProtocolPath, '../version')).defaultVersion : version
 
@@ -38,7 +46,7 @@ function createProxy (options, serverList) {
     customPackets: customPackets
   }
 
-  const proxy = new Proxy(serverOptions, serverList)
+  const proxy = new Proxy(serverOptions, serverList, proxyOptions)
   proxy.mcversion = mcversion
   proxy.motd = motd
   proxy.maxPlayers = maxPlayers
@@ -48,8 +56,10 @@ function createProxy (options, serverList) {
   proxy.serverKey = new NodeRSA({b: 1024})
 
   proxy.on('connection', function (client) {
-    serverPlugins.forEach((plugin) => plugin(client, proxy, options))
+    localServerPlugins.forEach((plugin) => plugin(client, proxy, localServerOptions, proxyOptions))
+    if (enablePlugins) proxyPlugins.forEach((plugin) => plugin(client, proxy, localServerOptions, proxyOptions))
   })
+
   proxy.listen(port, host)
   return proxy
 }

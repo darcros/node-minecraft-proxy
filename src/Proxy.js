@@ -9,9 +9,10 @@ class Proxy extends mc.Server {
    * @param {Object} serverSettings Settings for the minecraft-protocol server
    * @param {Object} serverList An object that maps a 'serverName' to the server info
    */
-  constructor (serverSettings, serverList) {
+  constructor (serverSettings, serverList, proxyOptions) {
     super(serverSettings.version, serverSettings.customPackets)
     this.serverList = serverList
+    this.proxyOptions = proxyOptions
 
     let self = this
     self.on('login', (remoteClient) => {

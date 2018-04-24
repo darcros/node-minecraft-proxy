@@ -24,7 +24,17 @@ let serverList = {
   }
 }
 
-let proxy = McProxy.createProxy(localServerOptions, serverList)
+let proxyOptions = {
+  // enables the plugins stored in the /src/Plugins folder, for now the only plugin is the command handler plugin
+  enablePlugins: true
+}
+
+/*
+  Use the "/server <serverName>" commad in chat to move between servers.
+  <serverName> is the name that you chose for the server inside the serverList
+  This command is implemented by /src/Plugins/ChatCommands.js and it can be disabled by setting enablePlugin: false inside proxyOptions
+*/
+let proxy = McProxy.createProxy(localServerOptions, serverList, proxyOptions)
 
 /*
   HANDLING EVENTS
@@ -62,18 +72,4 @@ proxy.on('playerMoved', (playerId, oldServerName, newServerName) => {
 
 proxy.on('playerFallback', (playerId, oldServerName, newServerName) => {
   console.info(`Player ${proxy.clients[playerId].username} is falling back from ${oldServerName} to ${newServerName}`)
-})
-
-/*
-  MOVING PLAYER WITH CHAT COMMAND
-*/
-
-proxy.on('login', (player) => {
-  player.on('chat', (data, metadata) => {
-    let split = data.message.split(' ')
-    if (split[0] === '/server' && proxy.serverList[split[1]]) {
-      console.log(`moving to server ${split[1]} with chat command`)
-      proxy.setRemoteServer(player.id, split[1])
-    }
-  })
 })
