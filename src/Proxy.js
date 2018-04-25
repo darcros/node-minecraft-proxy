@@ -10,7 +10,7 @@ class Proxy extends mc.Server {
    * @param {Object} serverList An object that maps a 'serverName' to the server info
    * @param {Object} proxyOptions Proxy settings
    */
-  constructor (serverSettings, serverList, proxyOptions) {
+  constructor (serverSettings = {}, serverList = {}, proxyOptions = {}) {
     super(serverSettings.version, serverSettings.customPackets)
     this.serverList = serverList
 
