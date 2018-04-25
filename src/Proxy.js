@@ -13,7 +13,9 @@ class Proxy extends mc.Server {
   constructor (serverSettings, serverList, proxyOptions) {
     super(serverSettings.version, serverSettings.customPackets)
     this.serverList = serverList
-    this.proxyOptions = proxyOptions
+
+    this.autoConnect = (typeof proxyOptions.autoConnect === 'undefined') ? true : !!proxyOptions.autoConnect
+    this.autoFallback = (typeof proxyOptions.autoFallback === 'undefined') ? true : !!proxyOptions.autoFallback
 
     let self = this
     self.on('login', (remoteClient) => {
@@ -27,18 +29,19 @@ class Proxy extends mc.Server {
         if (remoteClient.localClient) remoteClient.localClient.end()
       })
 
-      let defaultServer = this.getDefaultServerName()
-
       this.clients[id].isFirstConnection = true
       this.clients[id].currentServer = ''
 
-      this.setRemoteServer(id, defaultServer)
+      if (this.autoConnect) {
+        let defaultServer = this.getDefaultServerName()
+        this.setRemoteServer(id, defaultServer)
+      }
     })
   }
 
   /**
    * Moves the specified client to the specified server
-   * @param {string} remoteClientId The ID of the player to move
+   * @param {number} remoteClientId The ID of the player to move
    * @param {string} newServerName The name of the server where the player should be moved
    */
   setRemoteServer (remoteClientId, newServerName) {
@@ -85,13 +88,13 @@ class Proxy extends mc.Server {
 
   /**
    * Moves the specified client to the fallback server
-   * @param {string} remoteClientId The ID of the player to move
+   * @param {number} remoteClientId The ID of the player to move
    */
   fallback (remoteClientId) {
     let oldServerName = this.clients[remoteClientId].currentServer
     let fallbackServerName = this.getFallbackServerName()
     this.emit('playerFallback', remoteClientId, oldServerName, fallbackServerName)
-    this.setRemoteServer(remoteClientId, fallbackServerName)
+    if (this.autoFallback) this.setRemoteServer(remoteClientId, fallbackServerName)
   }
 
   /**
