@@ -20,7 +20,7 @@ const proxyPlugins = [
  * @param {Object} serverList An object that maps a 'serverName' to the server info
  * @returns {MinecraftProxy} A new Minecraft proxy
  */
-function createProxy (localServerOptions, serverList, proxyOptions) {
+function createProxy (localServerOptions = {}, serverList = {}, proxyOptions = {}) {
   const {
     host = '0.0.0.0',
     'server-port': serverPort,
