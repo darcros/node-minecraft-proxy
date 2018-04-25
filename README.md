@@ -1,32 +1,34 @@
 # node-minecraft-proxy
+
 Simple Minecraft proxy written in Node.js using the node-minecraft-protocol library
 
-> ### Table of contents
-> [Features](#Features)  
-> [Installation](#Installation)  
-> [Examples](#Examples)  
-> [Documentation](#Documentation)  
+- [node-minecraft-proxy](#node-minecraft-proxy)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Examples](#examples)
+    - [Creating a proxy](#creating-a-proxy)
+    - [Moving players from a server to another](#moving-players-from-a-server-to-another)
+  - [Documentation](#documentation)
 
 ## Features
-* Connect to proxy
-* Forward players to servers
-* Change server
+
+- Connect to proxy
+- Forward players to servers
+- Change server
+- Basic plugin support, see `./src/Plugins/ChatCommands.js` for an example
 
 ## Installation
 
-### Npm
 `npm install basic-minecraft-proxy`
 
-### Cloning repository
-1. Somewhere in you project folder do `git clone https://github.com/7ixi0/node-minecraft-proxy.git`
-2. install dependencies with `npm install`
-3. then inside your `whatever.js` file `const McProxy = require('./path/where/you/cloned');`
-
 ## Examples
+
 See also `./examples/` for other examples
 
 ### Creating a proxy
-This example shows how to create and how to the options are passed
+
+This example shows how to create a new proxy and how to the options are passed.
+
 ```js
 const McProxy = require('minecraft-proxy');
 
@@ -50,7 +52,15 @@ let serverList = {
   }
 }
 
-let proxy = McProxy.createProxy(localServerOptions, serverList);
+// if you leave proxyOptions empty yo may as well not pass it in the arguments, I wrote it anyway to point out that it exist
+let proxyOptions = {}
+
+/*
+  Use the "/server <serverName>" command in chat to move between servers.
+  <serverName> is the name that you chose for the server inside the serverList
+  This command is implemented by /src/Plugins/ChatCommands.js and it can be disabled by setting enablePlugin: false inside proxyOptions
+*/
+let proxy = McProxy.createProxy(localServerOptions, serverList, proxyOptions);
 
 proxy.on('error', console.error);
 
@@ -60,7 +70,9 @@ proxy.on('listening', () => {
 ```
 
 ### Moving players from a server to another
-In this example every player will be moved from the `hub` server (default) to the `minigames` server 30 seconds after having logged in
+
+In this example every player will be moved from the `hub` server (default) to the `minigames` server 30 seconds after having logged in.
+
 ```js
 proxy.on('login', (player) => {
   setTimeout(() => {
@@ -70,4 +82,5 @@ proxy.on('login', (player) => {
 ```
 
 ## Documentation
+
 See the [wiki](https://github.com/7ixi0/node-minecraft-proxy/wiki).
