@@ -1,7 +1,7 @@
 const McProxy = require('../')
 
 /*
-  CREATING SERVER
+  CREATING PROXY
 */
 
 let localServerOptions = {
