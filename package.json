@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "minecraft-data": "^2.26.0",
-    "minecraft-protocol": "^1.5.1",
+    "minecraft-protocol": "^1.12.0",
     "node-rsa": "^0.4.2",
     "queuejs": "^0.1.0"
   },
