@@ -36,6 +36,12 @@ function createProxy (localServerOptions = {}, serverList = {}, proxyOptions = {
     enablePlugins = true
   } = proxyOptions
 
+	let { plugins: proxyOptionsPlugins = [], preventDefaultPlugins: proxyPreventDefaultPlugins } = proxyOptions;
+	if(!proxyPreventDefaultPlugins) proxyOptionsPlugins = proxyOptionsPlugins.concat(proxyPlugins);
+
+	let { plugins: localServerOptionsPlugins = [], preventDefaultPlugins: localServerPreventDefaultPlugins } = localServerOptions;
+	if(!localServerPreventDefaultPlugins) localServerOptionsPlugins = localServerOptionsPlugins.concat(localServerPlugins);
+
   const optVersion = version === undefined || version === false ? require(path.join(mcProtocolPath, '../version')).defaultVersion : version
 
   const mcData = require('minecraft-data')(optVersion)
@@ -56,8 +62,8 @@ function createProxy (localServerOptions = {}, serverList = {}, proxyOptions = {
   proxy.serverKey = new NodeRSA({b: 1024})
 
   proxy.on('connection', function (client) {
-    localServerPlugins.forEach((plugin) => plugin(client, proxy, localServerOptions, proxyOptions))
-    if (enablePlugins) proxyPlugins.forEach((plugin) => plugin(client, proxy, localServerOptions, proxyOptions))
+    localServerOptionsPlugins.forEach((plugin) => plugin(client, proxy, localServerOptions, proxyOptions))
+    if (enablePlugins) proxyOptionsPlugins.forEach((plugin) => plugin(client, proxy, localServerOptions, proxyOptions))
   })
 
   proxy.listen(port, host)
