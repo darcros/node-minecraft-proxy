@@ -18,7 +18,7 @@ let serverList = {
 		isDefault: true,
 		isFallback: true,
 	},
-	minigames: {
+	otherServer: {
 		host: "localhost",
 		port: 25566,
 	},
@@ -29,9 +29,18 @@ let serverList = {
 */
 
 function handleHelloCommand(client, proxy, localServerOptions, proxyOptions) {
-	client.on("chat", (data, metadata) => {
+	// "prependListener" should ONLY be used for packet cancellation! otherwise, no one could ever cancel your actions
+	// check if the packet is a message and start with "%". If so, cancel it so the remote server wont receive it
+	client.prependListener("packet", (data, metadata, buffer, fullBuffer) => {
+		if(metadata.name === "chat") 
+			if(data.message?.startsWith("%"))
+				metadata.isCancelled = true;
+	});
+	// check if the message is "%hello". if so, return "Hi!"
+	client.prependListener("chat", (data, metadata) => {
 		let split = data.message.split(" ");
-		if (split[0] === "/hello") {
+		if (split[0] === "%hello") {
+			metadata.isCancelled = true;
 			const msg = {
 				color: "green",
 				text: "Hi!",

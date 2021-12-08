@@ -23,8 +23,8 @@
     "url": "https://github.com/7ixi0/node-minecraft-proxy/issues"
   },
   "dependencies": {
-    "minecraft-data": "^2.26.0",
-    "minecraft-protocol": "^1.5.1",
+    "minecraft-data": "^2.97.0",
+    "minecraft-protocol": "^1.28.1",
     "node-rsa": "^0.4.2",
     "queuejs": "^0.1.0"
   },
