@@ -70,9 +70,6 @@ class Proxy extends mc.Server {
 
 		newLocalClient.on("error", (err) => {
 			this.emit("playerMoveFailed", err, remoteClientId, oldServer, newServer);
-			console.log(
-				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-			);
 			this.emit("error", err);
 			try {
 				this.fallback(remoteClientId);
