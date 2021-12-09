@@ -71,7 +71,7 @@ proxy.on("login", (player) => {
 	});
 });
 
-proxy.on("moveFailed", (err, playerId, oldServer, newServer) => {
+proxy.on("playerMoveFailed", (err, playerId, oldServer, newServer) => {
 	console.error(
 		`Player ${proxy.clients[playerId].username} failed to move from ${oldServer?.name} to ${newServer?.name}`,
 		err
