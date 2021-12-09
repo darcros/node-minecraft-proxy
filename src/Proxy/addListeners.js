@@ -26,7 +26,7 @@ function addListeners(remoteClient, that) {
 	});
 
 	remoteClient.localClient.on("kick_disconnect", (data, metadata) => {
-		if (that.getFallbackServerName() === remoteClient.currentServer) {
+		if (that.getFallbackServer() === remoteClient.currentServer) {
 			if (!metadata.isCancelled) remoteClient.write(metadata.name, data);
 		} else {
 			that.fallback(remoteClient.id);
