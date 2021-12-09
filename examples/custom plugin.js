@@ -11,18 +11,24 @@ let localServerOptions = {
 	motd: "nodejs minecraft proxy",
 };
 
-let serverList = {
-	hub: {
-		host: "localhost",
-		port: 25565,
-		isDefault: true,
-		isFallback: true,
+let serverList = [
+	{
+		name: "hub",
+		settings: {
+			host: 'localhost',
+      port: 25565,
+      isDefault: true,
+      isFallback: true
+		}
 	},
-	otherServer: {
-		host: "localhost",
-		port: 25566,
+	{
+		name: "otherServer",
+		settings: {
+			host: 'localhost',
+      port: 25566
+		}
 	},
-};
+];
 
 /*
   CREATING PLUGIN
@@ -33,13 +39,12 @@ function handleHelloCommand(client, proxy, localServerOptions, proxyOptions) {
 	// check if the packet is a message and start with "%". If so, cancel it so the remote server wont receive it
 	client.prependListener("packet", (data, metadata, buffer, fullBuffer) => {
 		if(metadata.name === "chat") 
-			if(data.message?.startsWith("%"))
+			if(data.message?.toLowerCase() == "/hello")
 				metadata.isCancelled = true;
 	});
 	// check if the message is "%hello". if so, return "Hi!"
 	client.prependListener("chat", (data, metadata) => {
-		let split = data.message.split(" ");
-		if (split[0] === "%hello") {
+		if (data.message?.toLowerCase() == "/hello") {
 			metadata.isCancelled = true;
 			const msg = {
 				color: "green",
@@ -95,27 +100,27 @@ proxy.on("login", (player) => {
 	});
 });
 
-proxy.on("moveFailed", (err, playerId, oldServerName, newServerName) => {
+proxy.on("moveFailed", (err, playerId, oldServer, newServer) => {
 	console.error(
-		`Player ${proxy.clients[playerId].username} failed to move from ${oldServerName} to ${newServerName}`,
+		`Player ${proxy.clients[playerId].username} failed to move from ${oldServer?.name} to ${newServer?.name}`,
 		err
 	);
 });
 
-proxy.on("playerMoving", (playerId, oldServerName, newServerName) => {
+proxy.on("playerMoving", (playerId, oldServer, newServer) => {
 	console.info(
-		`Player ${proxy.clients[playerId].username} is moving from ${oldServerName} to ${newServerName}`
+		`Player ${proxy.clients[playerId].username} is moving from ${oldServer?.name} to ${newServer?.name}`
 	);
 });
 
-proxy.on("playerMoved", (playerId, oldServerName, newServerName) => {
+proxy.on("playerMoved", (playerId, oldServer, newServer) => {
 	console.info(
-		`Player ${proxy.clients[playerId].username} has moved from ${oldServerName} to ${newServerName}`
+		`Player ${proxy.clients[playerId].username} has moved from ${oldServer?.name} to ${newServer?.name}`
 	);
 });
 
-proxy.on("playerFallback", (playerId, oldServerName, newServerName) => {
+proxy.on("playerFallback", (playerId, oldServer, newServer) => {
 	console.info(
-		`Player ${proxy.clients[playerId].username} is falling back from ${oldServerName} to ${newServerName}`
+		`Player ${proxy.clients[playerId].username} is falling back from ${oldServer?.name} to ${newServer?.name}`
 	);
 });

@@ -11,18 +11,24 @@ let localServerOptions = {
   'motd': 'nodejs minecraft proxy'
 }
 
-let serverList = {
-  hub: {
-    host: 'localhost',
-    port: 25565,
-    isDefault: true,
-    isFallback: true
-  },
-  minigames: {
-    host: 'localhost',
-    port: 25566
-  }
-}
+let serverList = [
+	{
+		name: "hub",
+		settings: {
+			host: 'localhost',
+      port: 25565,
+      isDefault: true,
+      isFallback: true
+		}
+	},
+	{
+		name: "minigames",
+		settings: {
+			host: 'localhost',
+      port: 25566
+		}
+	},
+];
 
 let proxyOptions = {
   // the proxy won't automatically connect players to the default server

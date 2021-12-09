@@ -11,18 +11,25 @@ let localServerOptions = {
   'motd': 'nodejs minecraft proxy'
 }
 
-let serverList = {
-  hub: {
-    host: 'localhost',
-    port: 25565,
-    isDefault: true,
-    isFallback: true
-  },
-  minigames: {
-    host: 'localhost',
-    port: 25566
-  }
-}
+
+let serverList = [
+	{
+		name: "hub",
+		settings: {
+			host: 'localhost',
+      port: 25565,
+      isDefault: true,
+      isFallback: true
+		}
+	},
+	{
+		name: "minigames",
+		settings: {
+			host: 'localhost',
+      port: 25566
+		}
+	},
+];
 
 let proxyOptions = {
   // enables the plugins stored in the /src/Plugins folder, for now the only plugin is the command handler plugin
@@ -58,18 +65,18 @@ proxy.on('login', (player) => {
   })
 })
 
-proxy.on('moveFailed', (err, playerId, oldServerName, newServerName) => {
-  console.error(`Player ${proxy.clients[playerId].username} failed to move from ${oldServerName} to ${newServerName}`, err)
-})
+proxy.on("moveFailed", (err, playerId, oldServer, newServer) => {
+	console.error(`Player ${proxy.clients[playerId].username} failed to move from ${oldServer?.name} to ${newServer?.name}`,err);
+});
 
-proxy.on('playerMoving', (playerId, oldServerName, newServerName) => {
-  console.info(`Player ${proxy.clients[playerId].username} is moving from ${oldServerName} to ${newServerName}`)
-})
+proxy.on("playerMoving", (playerId, oldServer, newServer) => {
+	console.info(`Player ${proxy.clients[playerId].username} is moving from ${oldServer?.name} to ${newServer?.name}`);
+});
 
-proxy.on('playerMoved', (playerId, oldServerName, newServerName) => {
-  console.info(`Player ${proxy.clients[playerId].username} has moved from ${oldServerName} to ${newServerName}`)
-})
+proxy.on("playerMoved", (playerId, oldServer, newServer) => {
+	console.info(`Player ${proxy.clients[playerId].username} has moved from ${oldServer?.name} to ${newServer?.name}`);
+});
 
-proxy.on('playerFallback', (playerId, oldServerName, newServerName) => {
-  console.info(`Player ${proxy.clients[playerId].username} is falling back from ${oldServerName} to ${newServerName}`)
-})
+proxy.on("playerFallback", (playerId, oldServer, newServer) => {
+	console.info(`Player ${proxy.clients[playerId].username} is falling back from ${oldServer?.name} to ${newServer?.name}`);
+});
