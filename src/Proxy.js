@@ -68,13 +68,28 @@ class Proxy extends mc.Server {
 			...newServer.settings,
 		});
 
+		let connected = false;
+
+		newLocalClient.once("connect", () => {
+			connected = true;
+		});
+
 		newLocalClient.on("error", (err) => {
-			this.emit("playerMoveFailed", err, remoteClientId, oldServer, newServer);
 			this.emit("error", err);
-			try {
-				this.fallback(remoteClientId);
-			} catch (error) {
-				this.emit("error", error);
+			if (!connected)
+				this.emit(
+					"playerMoveFailed",
+					err,
+					remoteClientId,
+					oldServer,
+					newServer
+				);
+			else {
+				try {
+					this.fallback(remoteClientId, err?.message);
+				} catch (error) {
+					this.emit("error", error);
+				}
 			}
 		});
 
@@ -100,12 +115,19 @@ class Proxy extends mc.Server {
 	 * @param {number} remoteClientId The ID of the player to move
 	 * @throws {Error} when no fallback server is found
 	 */
-	fallback(remoteClientId) {
+	fallback(remoteClientId, reason) {
 		if (this.autoFallback) {
 			const oldServer = this.clients[remoteClientId].currentServer;
 			const fallbackServer = this.getFallbackServer();
+			if (oldServer === fallbackServer) return;
 			if (!fallbackServer) throw new Error("No fallback server found!");
-			this.emit("playerFallback", remoteClientId, oldServer, fallbackServer);
+			this.emit(
+				"playerFallback",
+				remoteClientId,
+				oldServer,
+				fallbackServer,
+				reason
+			);
 			this.setRemoteServer(remoteClientId, fallbackServer);
 		}
 	}

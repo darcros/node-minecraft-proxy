@@ -29,7 +29,11 @@ function addListeners(remoteClient, that) {
 		if (that.getFallbackServer() === remoteClient.currentServer) {
 			if (!metadata.isCancelled) remoteClient.write(metadata.name, data);
 		} else {
-			that.fallback(remoteClient.id);
+			let reason = "disconnected";
+			try {
+				reason = JSON.parse(data.reason);
+			} catch (error) {}
+			that.fallback(remoteClient.id, reason);
 		}
 	});
 }

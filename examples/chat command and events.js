@@ -71,7 +71,7 @@ proxy.on("login", (player) => {
 	});
 });
 
-proxy.on("playerMoveFailed", (err, playerId, oldServer, newServer) => {
+proxy.on("playerMoveFailed", (playerId, oldServer, newServer, err) => {
 	console.error(
 		`Player ${proxy.clients[playerId].username} failed to move from ${oldServer?.name} to ${newServer?.name}`,
 		err
@@ -90,8 +90,9 @@ proxy.on("playerMoved", (playerId, oldServer, newServer) => {
 	);
 });
 
-proxy.on("playerFallback", (playerId, oldServer, newServer) => {
+proxy.on("playerFallback", (playerId, oldServer, newServer, reason) => {
 	console.info(
-		`Player ${proxy.clients[playerId].username} is falling back from ${oldServer?.name} to ${newServer?.name}`
+		`Player ${proxy.clients[playerId].username} is falling back from ${oldServer?.name} to ${newServer?.name}`,
+		reason
 	);
 });

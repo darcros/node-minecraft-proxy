@@ -53,8 +53,8 @@ proxy.on("login", (client) => {
 
 proxy.on(
 	"playerFallback",
-	(remoteClientId, oldServerName, fallbackServerName) => {
-		console.info(`Fallback from ${oldServerName}`);
+	(remoteClientId, oldServerName, fallbackServerName, reason) => {
+		console.info(`Fallback from ${oldServerName}`, reason);
 		proxy.setRemoteServer(remoteClientId, fallbackServerName);
 	}
 );
