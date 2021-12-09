@@ -79,10 +79,10 @@ class Proxy extends mc.Server {
 			if (!connected)
 				this.emit(
 					"playerMoveFailed",
-					err,
 					remoteClientId,
 					oldServer,
-					newServer
+					newServer,
+					err
 				);
 			else {
 				try {
