@@ -15,18 +15,18 @@ let serverList = [
 	{
 		name: "hub",
 		settings: {
-			host: 'localhost',
-      port: 25565,
-      isDefault: true,
-      isFallback: true
-		}
+			host: "localhost",
+			port: 25565,
+			isDefault: true,
+			isFallback: true,
+		},
 	},
 	{
 		name: "otherServer",
 		settings: {
-			host: 'localhost',
-      port: 25566
-		}
+			host: "localhost",
+			port: 25566,
+		},
 	},
 ];
 
@@ -38,9 +38,8 @@ function handleHelloCommand(client, proxy, localServerOptions, proxyOptions) {
 	// "prependListener" should ONLY be used for packet cancellation! otherwise, no one could ever cancel your actions
 	// check if the packet is a message and start with "%". If so, cancel it so the remote server wont receive it
 	client.prependListener("packet", (data, metadata, buffer, fullBuffer) => {
-		if(metadata.name === "chat") 
-			if(data.message?.toLowerCase() == "/hello")
-				metadata.isCancelled = true;
+		if (metadata.name === "chat")
+			if (data.message?.toLowerCase() == "/hello") metadata.isCancelled = true;
 	});
 	// check if the message is "%hello". if so, return "Hi!"
 	client.prependListener("chat", (data, metadata) => {
@@ -60,8 +59,8 @@ let proxyOptions = {
 	enablePlugins: true,
 	// add my "handleHelloCommand" plugin handler as a proxy plugin
 	plugins: [handleHelloCommand],
-  // if set to true, dont load default plugins. default plugins can be found in /src/Plugins folder
-  preventDefaultPlugins: false
+	// if set to true, dont load default plugins. default plugins can be found in /src/Plugins folder
+	preventDefaultPlugins: false,
 };
 
 /*

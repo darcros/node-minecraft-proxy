@@ -1,18 +1,16 @@
-const NodeRSA = require('node-rsa')
-const path = require('path')
+const NodeRSA = require("node-rsa");
+const path = require("path");
 
-const Proxy = require('./Proxy')
+const Proxy = require("./Proxy");
 
-const mcProtocolPath = require.resolve('minecraft-protocol')
+const mcProtocolPath = require.resolve("minecraft-protocol");
 const localServerPlugins = [
-  require(path.join(mcProtocolPath, '../server/handshake')),
-  require(path.join(mcProtocolPath, '../server/login')),
-  require(path.join(mcProtocolPath, '../server/ping'))
-]
+	require(path.join(mcProtocolPath, "../server/handshake")),
+	require(path.join(mcProtocolPath, "../server/login")),
+	require(path.join(mcProtocolPath, "../server/ping")),
+];
 
-const proxyPlugins = [
-  require('./Plugins/ChatCommands')
-]
+const proxyPlugins = [require("./Plugins/ChatCommands")];
 
 /**
  * Create a new proxy
@@ -20,54 +18,73 @@ const proxyPlugins = [
  * @param {Object} serverList An object that maps a 'serverName' to the server info
  * @returns {MinecraftProxy} A new Minecraft proxy
  */
-function createProxy (localServerOptions = {}, serverList = {}, proxyOptions = {}) {
-  const {
-    host = '0.0.0.0',
-    'server-port': serverPort,
-    port = serverPort || 25565,
-    motd = 'A Minecraft server',
-    'max-players': maxPlayers = 20,
-    version,
-    favicon,
-    customPackets
-  } = localServerOptions
+function createProxy(
+	localServerOptions = {},
+	serverList = {},
+	proxyOptions = {}
+) {
+	const {
+		host = "0.0.0.0",
+		"server-port": serverPort,
+		port = serverPort || 25565,
+		motd = "A Minecraft server",
+		"max-players": maxPlayers = 20,
+		version,
+		favicon,
+		customPackets,
+	} = localServerOptions;
 
-  const {
-    enablePlugins = true
-  } = proxyOptions
+	const { enablePlugins = true } = proxyOptions;
 
-	let { plugins: proxyOptionsPlugins = [], preventDefaultPlugins: proxyPreventDefaultPlugins } = proxyOptions;
-	if(!proxyPreventDefaultPlugins) proxyOptionsPlugins = proxyOptionsPlugins.concat(proxyPlugins);
+	let {
+		plugins: proxyOptionsPlugins = [],
+		preventDefaultPlugins: proxyPreventDefaultPlugins,
+	} = proxyOptions;
+	if (!proxyPreventDefaultPlugins)
+		proxyOptionsPlugins = proxyOptionsPlugins.concat(proxyPlugins);
 
-	let { plugins: localServerOptionsPlugins = [], preventDefaultPlugins: localServerPreventDefaultPlugins } = localServerOptions;
-	if(!localServerPreventDefaultPlugins) localServerOptionsPlugins = localServerOptionsPlugins.concat(localServerPlugins);
+	let {
+		plugins: localServerOptionsPlugins = [],
+		preventDefaultPlugins: localServerPreventDefaultPlugins,
+	} = localServerOptions;
+	if (!localServerPreventDefaultPlugins)
+		localServerOptionsPlugins =
+			localServerOptionsPlugins.concat(localServerPlugins);
 
-  const optVersion = version === undefined || version === false ? require(path.join(mcProtocolPath, '../version')).defaultVersion : version
+	const optVersion =
+		version === undefined || version === false
+			? require(path.join(mcProtocolPath, "../version")).defaultVersion
+			: version;
 
-  const mcData = require('minecraft-data')(optVersion)
-  const mcversion = mcData.version
+	const mcData = require("minecraft-data")(optVersion);
+	const mcversion = mcData.version;
 
-  const serverOptions = {
-    version: mcversion.minecraftVersion,
-    customPackets: customPackets
-  }
+	const serverOptions = {
+		version: mcversion.minecraftVersion,
+		customPackets: customPackets,
+	};
 
-  const proxy = new Proxy(serverOptions, serverList, proxyOptions)
-  proxy.mcversion = mcversion
-  proxy.motd = motd
-  proxy.maxPlayers = maxPlayers
-  proxy.playerCount = 0
-  proxy.onlineModeExceptions = {}
-  proxy.favicon = favicon
-  proxy.serverKey = new NodeRSA({b: 1024})
+	const proxy = new Proxy(serverOptions, serverList, proxyOptions);
+	proxy.mcversion = mcversion;
+	proxy.motd = motd;
+	proxy.maxPlayers = maxPlayers;
+	proxy.playerCount = 0;
+	proxy.onlineModeExceptions = {};
+	proxy.favicon = favicon;
+	proxy.serverKey = new NodeRSA({ b: 1024 });
 
-  proxy.on('connection', function (client) {
-    localServerOptionsPlugins.forEach((plugin) => plugin(client, proxy, localServerOptions, proxyOptions))
-    if (enablePlugins) proxyOptionsPlugins.forEach((plugin) => plugin(client, proxy, localServerOptions, proxyOptions))
-  })
+	proxy.on("connection", function (client) {
+		localServerOptionsPlugins.forEach((plugin) =>
+			plugin(client, proxy, localServerOptions, proxyOptions)
+		);
+		if (enablePlugins)
+			proxyOptionsPlugins.forEach((plugin) =>
+				plugin(client, proxy, localServerOptions, proxyOptions)
+			);
+	});
 
-  proxy.listen(port, host)
-  return proxy
+	proxy.listen(port, host);
+	return proxy;
 }
 
-module.exports = createProxy
+module.exports = createProxy;
