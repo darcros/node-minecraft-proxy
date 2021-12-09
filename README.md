@@ -30,30 +30,36 @@ See also `./examples/` for other examples
 This example shows how to create a new proxy and how to the options are passed.
 
 ```js
-const McProxy = require('minecraft-proxy');
+const McProxy = require("minecraft-proxy");
 
 let localServerOptions = {
-  'port': '25578',
-  'version': '1.12.1',
-  'online-mode': false,
-  'motd': 'nodejs minecraft proxy'
-}
+	port: "25578",
+	version: "1.12.1",
+	"online-mode": false,
+	motd: "nodejs minecraft proxy",
+};
 
-let serverList = {
-  hub: {
-    host: 'localhost',
-    port: 25565,
-    isDefault: true,
-    isFallback: true
-  },
-  minigames: {
-    host: 'localhost',
-    port: 25566
-  }
-}
+let serverList = [
+	{
+		name: "hub",
+		settings: {
+			host: "localhost",
+			port: 25565,
+			isDefault: true,
+			isFallback: true,
+		},
+	},
+	{
+		name: "minigames",
+		settings: {
+			host: "localhost",
+			port: 25566,
+		},
+	},
+];
 
 // if you leave proxyOptions empty yo may as well not pass it in the arguments, I wrote it anyway to point out that it exist
-let proxyOptions = {}
+let proxyOptions = {};
 
 /*
   Use the "/server <serverName>" command in chat to move between servers.
@@ -62,10 +68,10 @@ let proxyOptions = {}
 */
 let proxy = McProxy.createProxy(localServerOptions, serverList, proxyOptions);
 
-proxy.on('error', console.error);
+proxy.on("error", console.error);
 
-proxy.on('listening', () => {
-  console.info('Listening!');
+proxy.on("listening", () => {
+	console.info("Listening!");
 });
 ```
 
@@ -74,10 +80,10 @@ proxy.on('listening', () => {
 In this example every player will be moved from the `hub` server (default) to the `minigames` server 30 seconds after having logged in.
 
 ```js
-proxy.on('login', (player) => {
-  setTimeout(() => {
-    proxy.setRemoteServer(player.id, "minigames");
-  }, 30 * 1000);
+proxy.on("login", (player) => {
+	setTimeout(() => {
+		proxy.setRemoteServer(player.id, "minigames");
+	}, 30 * 1000);
 });
 ```
 
